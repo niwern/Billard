@@ -1,7 +1,8 @@
 import draw
 import color
 import vektor
-import math, sys
+import math
+import sys
 
 RADIUS = 0.015
 
@@ -62,6 +63,7 @@ class kugel(object):
     def einlochen(self, current_player, p):
         print("kugel {} mit {} wurde eingelocht".format(self.c, self.m))
 
+        # spiel beenden, wenn schwarze drin
         if self.c == color.BLACK:
             if current_player.points == 7:
                 print("{} hat gewonnen.".format(current_player.name))
@@ -69,6 +71,7 @@ class kugel(object):
                 print("{} hat verloren.".format(current_player.name))
             sys.exit()
 
+        # zuweisung der Kugeln
         if current_player.marker == None and self.c != color.WHITE:
             if p[0].name == current_player.name:
                 p[0].marker = self.m
@@ -77,15 +80,22 @@ class kugel(object):
                 p[0].marker = not self.m
                 p[1].marker = self.m
 
-            print(p[0].marker, p[1].marker)
+            print("{} hat die {} Kugeln".format(current_player.name, current_player.marker))
+
         if self.c != color.WHITE:
+            # punktevergabe
             if self.m == p[0].marker:
                 p[0].get_point()
             else:
                 p[1].get_point()
-            if p[0].name == current_player.name and p[0].ist_am_zug:
+
+            # noch mal dran
+            if p[0].name == current_player.name and p[0].ist_am_zug and current_player.marker == self.m:
                 p[0].ist_am_zug = False
                 p[1].ist_am_zug = True
+            elif p[1].name == current_player.name and p[1].ist_am_zug and current_player.marker == self.m:
+                p[0].ist_am_zug = True
+                p[1].ist_am_zug = False
 
 
         self.eingelocht = True

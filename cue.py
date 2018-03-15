@@ -11,6 +11,7 @@ LENGTH = 30
 class cue(object):
     def __init__(self):
         self.alpha = 0
+        self.pow = 1
 
     def rotate(self):
         if self.alpha >= math.pi:
@@ -27,5 +28,13 @@ class cue(object):
     def draw(self, k):
         draw.set_pen_radius(PEN_RADIUS)
         draw.set_pen_color(color.BROWN)
-        draw.line(k.x + math.cos(self.alpha)*kugel.RADIUS*2, k.y + math.sin(self.alpha)*kugel.RADIUS*2,
-                  k.x + math.cos(self.alpha)*kugel.RADIUS*LENGTH, k.y + math.sin(self.alpha)*kugel.RADIUS*LENGTH)
+        draw.line(k.x + math.cos(self.alpha)*kugel.RADIUS*(2 + self.pow),
+                  k.y + math.sin(self.alpha)*kugel.RADIUS*(2 + self.pow),
+                  k.x + math.cos(self.alpha)*kugel.RADIUS*(LENGTH + self.pow),
+                  k.y + math.sin(self.alpha)*kugel.RADIUS*(LENGTH + self.pow))
+        draw.set_pen_radius(0.001)
+        draw.set_pen_color(color.RED)
+        draw.line(k.x - math.cos(self.alpha)*kugel.RADIUS*(2),
+                  k.y - math.sin(self.alpha)*kugel.RADIUS*(2),
+                  k.x - math.cos(self.alpha)*kugel.RADIUS*(600),
+                  k.y - math.sin(self.alpha)*kugel.RADIUS*(600))

@@ -361,7 +361,7 @@ def kugeln_stehen_still(k):
 
 def kugel_zurueck_setzen():
     """
-    setzt die weiße Kugel auf die Ursprungsposition zurueck
+    setzt die weisse Kugel auf die Ursprungsposition zurueck
     :return:
     """
     k[0].eingelocht = False
@@ -388,7 +388,7 @@ def main():
     :return:
     """
 
-    draw.set_canvas_size(800, 800)
+    draw.set_canvas_size(1000, 1000)
     my_cue = cue.cue()
     kugeln_legen()
     #p[0].ist_am_zug = True
@@ -457,15 +457,32 @@ def main():
                         pass
                 while True:
                     try:
-                        cue_power = float(input("Wie hart wollen sie schlagen [0,1]?"))
+                        cue_power = float(input("Wie hart wollen sie schlagen [0,2]?"))
                     except:
                         continue
-                    if 0 > cue_power or cue_power > 1:
+                    if 0 > cue_power or cue_power > 2:
                         print("DEPP!")
                         continue
 
                     try:
                         if str(input("Wollen Sie in wirklich mit {} power schlagen".format(cue_power))).lower() == "y":
+                            # animationn weg
+                            while my_cue.pow < 0.5 + 2*cue_power:
+                                my_cue.pow += 0.02
+
+                                draw.clear()
+                                tisch()
+                                my_cue.draw(k[0])
+                                draw.show(1)
+                            # animation hin
+                            while my_cue.pow > 1:
+                                my_cue.pow -= 0.2 * cue_power
+
+                                draw.clear()
+                                tisch()
+                                my_cue.draw(k[0])
+                                draw.show(1)
+
                             k[0].v = my_cue.power(k[0], cue_power)
                             break
                     except:
