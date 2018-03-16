@@ -5,14 +5,20 @@ import kugel
 import vektor
 import cue
 import player
+import pygame
 
 # Konstanten
 BORDER = .045  # Breite des Randes
 LOCH_NORM = BORDER/math.sqrt(2)  # Konstante (wichtig, um Loecher zu zeichen)
 BORDER_LOSS = .9  # Geschwindigkeitsverlust, bei Kollision mit Rand
 KUGEL_NORM = math.sqrt(3)*kugel.RADIUS  # Konstante (wichtig, um Kugeln zu platzieren)
+theme = None
 
 SAFE_SPACE = .0005
+CAT_IMAGE = pygame.image.load("cat Kopie.jpg")
+CAT_IMAGE = pygame.transform.rotozoom(CAT_IMAGE, 0, 0.5)
+LION_3000 = pygame.image.load("lion 3001.jpg")
+LION_3000 = pygame.transform.rotozoom(LION_3000, 0, 0.32)
 
 
 Y_MID = 0.5 + BORDER/2  #
@@ -74,15 +80,16 @@ def kugeln_legen():
                          False))
 
 
-def tisch():
+def tisch(theme=None):
     """
     zeichnet den Tisch und die Kugeln
     :return:
     """
+    if theme == None:
     # Table --------------------------------------------------------------------------------------
-    draw.set_pen_color(color.GREEN)
-    draw.filled_rectangle(0, 0.25, 1, 0.5)
-    draw.set_pen_radius(BORDER)
+        draw.set_pen_color(color.GREEN)
+        draw.filled_rectangle(0, 0.25, 1, 0.5)
+        draw.set_pen_radius(BORDER)
 
     # Bande --------------------------------------------------------------------------------------
     draw.set_pen_color(color.BROWN)
@@ -375,9 +382,9 @@ def kugel_zurueck_setzen():
             if not k[0].overlap(k[1:]):
                 break
         k[0].y += dir*.001
-        tisch()
+        tisch(theme)
         draw.show(1)
-        draw.clear()
+        draw.clear(theme)
 
 
 def main():
@@ -387,8 +394,19 @@ def main():
     - laeuft Spielschleife
     :return:
     """
-
-    draw.set_canvas_size(1000, 1000)
+    global theme
+    theme= str(input(" 'cat' or 'lion' theme? "))
+    if theme == 'cat':
+        theme = CAT_IMAGE
+        draw.set_canvas_size(CAT_IMAGE, 1000, 1000)
+        draw.show(3000)
+    elif theme == 'lion':
+        theme = LION_3000
+        draw.set_canvas_size(LION_3000, 1000, 1000)
+        draw.show(3000)
+    else:
+        theme = None
+        draw.set_canvas_size(None, 1000, 1000)
     my_cue = cue.cue()
     kugeln_legen()
     #p[0].ist_am_zug = True
@@ -398,7 +416,7 @@ def main():
     while True:
 
 
-        tisch()  # Tisch & Kugeln werden gezeichnet
+        tisch(theme)  # Tisch & Kugeln werden gezeichnet
         draw.show(1)
 
 
@@ -429,8 +447,8 @@ def main():
                     k[0].y = Y_MID
                     dir = 1
                     while True:
-                        draw.clear()
-                        tisch()
+                        draw.clear(theme)
+                        tisch(theme)
                         draw.show(1)
                         if draw.mouse_pressed():
                             if not k[0].overlap(k[1:]):
@@ -446,8 +464,8 @@ def main():
                     except:
                         continue
                     my_cue.alpha = math.radians(winkel)
-                    draw.clear()
-                    tisch()
+                    draw.clear(theme)
+                    tisch(theme)
                     my_cue.draw(k[0])
                     draw.show(1)
                     try:
@@ -470,16 +488,16 @@ def main():
                             while my_cue.pow < 0.5 + 2*cue_power:
                                 my_cue.pow += 0.02
 
-                                draw.clear()
-                                tisch()
+                                draw.clear(theme)
+                                tisch(theme)
                                 my_cue.draw(k[0])
                                 draw.show(1)
                             # animation hin
                             while my_cue.pow > 1:
                                 my_cue.pow -= 0.2 * cue_power
 
-                                draw.clear()
-                                tisch()
+                                draw.clear(theme)
+                                tisch(theme)
                                 my_cue.draw(k[0])
                                 draw.show(1)
 
@@ -509,10 +527,9 @@ def main():
         #                i.move()
 
         # draw.show(1)  # zeigt alle Objekte fuer 1 ms
-        draw.clear()  # leert die Zeichenflaeche
+        draw.clear(theme)  # leert die Zeichenflaeche
 
 
 if __name__ == "__main__":
     print("Herzlich Willkomen zu dem Billard-Simulator 3000")
     main()
-

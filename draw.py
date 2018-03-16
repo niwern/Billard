@@ -126,7 +126,7 @@ def _user_y(y):
 
 # -----------------------------------------------------------------------
 
-def set_canvas_size(w=_DEFAULT_CANVAS_SIZE, h=_DEFAULT_CANVAS_SIZE):
+def set_canvas_size(image, w=_DEFAULT_CANVAS_SIZE, h=_DEFAULT_CANVAS_SIZE):
     """
     Set the size of the canvas to w pixels wide and h pixels high.
     Calling this function is optional. If you call it, you must do
@@ -147,9 +147,13 @@ def set_canvas_size(w=_DEFAULT_CANVAS_SIZE, h=_DEFAULT_CANVAS_SIZE):
     _canvasWidth = w
     _canvasHeight = h
     _background = pygame.display.set_mode([w, h])
-    pygame.display.set_caption('stddraw window (r-click to save)')
+    pygame.display.set_caption('Billard Simulator 3000')
     _surface = pygame.Surface((w, h))
-    _surface.fill(_pygame_color(color.WHITE))
+    if image != None:
+        _surface = image  # todo KATZEN
+        # surface = pygame.transform.scale(_surface, (w, h))                        # Verändert den angezeigten Bild ausschnitt
+    else:
+        _surface.fill(_pygame_color(color.WHITE))
     _windowCreated = True
 
 
@@ -516,7 +520,7 @@ def text(x, y, s):
     _surface.blit(text, textpos)
 
 
-def picture(pic, x=None, y=None):
+def picture(pic, w, h, x=None, y=None):
     """
     Draw pic on the background canvas centered at (x, y).  pic is an
     object of class picture.Picture. x and y default to the midpoint
@@ -535,17 +539,29 @@ def picture(pic, x=None, y=None):
     ys = _scale_y(y)
     ws = pic.width()
     hs = pic.height()
+    #ws = w # EDITED
+    #hs = h # EDITED
     pic_surface = pic._surface  # violates encapsulation
+
+    #_background.blit(pic, (100, 100))
     _surface.blit(pic_surface, [xs - ws/2.0, ys - hs/2.0, ws, hs])
 
+def picture_improved(image, x, y):
+    _background.blit(image, (x, y))
+    pygame.display.flip()
 
-def clear(c=color.WHITE):
+
+
+def clear(c):
     """
     Clear the background canvas to color c, where c is an
     object of class color.Color. c defaults to stddraw.WHITE.
     """
     _make_sure_window_created()
-    _surface.fill(_pygame_color(c))
+    if c == None:
+        _surface.fill(_pygame_color(color.WHITE))
+    else:
+        _surface.blit(c, (0, 0), None)
 
 
 def save(f):
