@@ -15,10 +15,8 @@ KUGEL_NORM = math.sqrt(3)*kugel.RADIUS  # Konstante (wichtig, um Kugeln zu platz
 theme = None
 
 SAFE_SPACE = .0005
-CAT_IMAGE = pygame.image.load("cat Kopie.jpg")
-CAT_IMAGE = pygame.transform.rotozoom(CAT_IMAGE, 0, 0.5)
-LION_3000 = pygame.image.load("lion 3001.jpg")
-LION_3000 = pygame.transform.rotozoom(LION_3000, 0, 0.32)
+CAT_IMAGE = pygame.transform.rotozoom(pygame.image.load("cat Kopie.jpg"), 0, 0.5)
+LION_3000 = pygame.transform.rotozoom(pygame.image.load("lion 3001.jpg"), 0, 0.32)
 
 
 Y_MID = 0.5 + BORDER/2  #
@@ -397,11 +395,11 @@ def main():
     global theme
     theme= str(input(" 'cat' or 'lion' theme? "))
     if theme == 'cat':
-        theme = CAT_IMAGE
+        #theme = CAT_IMAGE
         draw.set_canvas_size(CAT_IMAGE, 1000, 1000)
         draw.show(3000)
     elif theme == 'lion':
-        theme = LION_3000
+        #theme = LION_3000
         draw.set_canvas_size(LION_3000, 1000, 1000)
         draw.show(3000)
     else:

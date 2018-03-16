@@ -546,6 +546,7 @@ def picture(pic, w, h, x=None, y=None):
     #_background.blit(pic, (100, 100))
     _surface.blit(pic_surface, [xs - ws/2.0, ys - hs/2.0, ws, hs])
 
+
 def picture_improved(image, x, y):
     _background.blit(image, (x, y))
     pygame.display.flip()
@@ -557,11 +558,14 @@ def clear(c):
     Clear the background canvas to color c, where c is an
     object of class color.Color. c defaults to stddraw.WHITE.
     """
+    global _surface
     _make_sure_window_created()
     if c == None:
         _surface.fill(_pygame_color(color.WHITE))
+    elif c == 'cat':
+        _surface = pygame.transform.rotozoom(pygame.image.load("cat Kopie.jpg"), 0, 0.5)
     else:
-        _surface.blit(c, (0, 0), None)
+        _surface = pygame.transform.rotozoom(pygame.image.load("lion 3001.jpg"), 0, 0.32)
 
 
 def save(f):
