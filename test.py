@@ -1,4 +1,5 @@
 import draw, color, pygame
+import random
 
 image = pygame.image.load("cat Kopie.jpg")
 w = 600
@@ -22,4 +23,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    print(random.randrange(19))
